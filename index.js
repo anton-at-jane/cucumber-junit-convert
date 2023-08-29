@@ -18,7 +18,7 @@ function convert(options) {
 
       durationInSec += result.duration;
       if (result.status === 'failed') {
-        
+
         if (result.embeddings.length) {
           suite
             .testCase()
@@ -27,14 +27,16 @@ function convert(options) {
             .standardError(result.message)
             .errorAttachment(result.embeddings[0])
             .failure(result.message)
-            .time(result.duration);
+            .time(result.duration)
+            .file(options.inputJsonFile);
         } else {
           suite
             .testCase()
             .name(scenario.name)
             .className(className)
             .failure(result.message)
-            .time(result.duration);
+            .time(result.duration)
+            .file(options.inputJsonFile);
         }
       } else if (result.status === 'skipped') {
         suite
@@ -42,13 +44,15 @@ function convert(options) {
           .name(scenario.name)
           .className(className)
           .skipped()
-          .time(result.duration);
+          .time(result.duration)
+          .file(options.inputJsonFile);
       } else {
         suite
           .testCase()
           .name(scenario.name)
           .className(className)
-          .time(result.duration);
+          .time(result.duration)
+          .file(options.inputJsonFile);
       }
     });
     suite.time(durationInSec);
