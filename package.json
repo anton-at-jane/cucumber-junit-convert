@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "junit-report-builder": "1.3.3",
+    "junit-report-builder": "3.0.1",
     "jsonfile": "5.0.0"
   },
   "scripts": {
