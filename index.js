@@ -5,57 +5,36 @@ const jsonFile = require('jsonfile');
 function convert(options) {
   const jsonFileResult = jsonFile.readFileSync(options.inputJsonFile);
   const reportBuilder = builder.newBuilder();
+  const suite = reportBuilder.testSuite().name("all");
   jsonFileResult.forEach(function(feature) {
     let durationInSec = 0;
-    const suite = reportBuilder.testSuite().name(feature.name);
+
+    const testCase = suite.testCase().name(feature.name).file(feature.uri);
+
     feature.elements.forEach(function(scenario) {
       if (scenario.type == 'background') {
         return;
       }
 
       const result = getScenarioSummary(scenario, options);
-      const className = options.featureNameAsClassName ? feature.name : scenario.id;
 
-      durationInSec += result.duration;
       if (result.status === 'failed') {
-
         if (result.embeddings.length) {
-          suite
-            .testCase()
-            .name(scenario.name)
-            .className(className)
+          testCase
             .standardError(result.message)
             .errorAttachment(result.embeddings[0])
-            .failure(result.message)
-            .time(result.duration)
-            .file(options.inputJsonFile);
+            .failure(result.message);
         } else {
-          suite
-            .testCase()
-            .name(scenario.name)
-            .className(className)
-            .failure(result.message)
-            .time(result.duration)
-            .file(options.inputJsonFile);
+          testCase.failure(result.message);
         }
       } else if (result.status === 'skipped') {
-        suite
-          .testCase()
-          .name(scenario.name)
-          .className(className)
-          .skipped()
-          .time(result.duration)
-          .file(options.inputJsonFile);
-      } else {
-        suite
-          .testCase()
-          .name(scenario.name)
-          .className(className)
-          .time(result.duration)
-          .file(options.inputJsonFile);
+        testCase.skipped();
       }
+
+      durationInSec += result.duration;
     });
-    suite.time(durationInSec);
+
+    testCase.time(durationInSec);
   });
   reportBuilder.writeTo(options.outputXmlFile);
 }
