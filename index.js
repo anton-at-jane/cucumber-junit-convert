@@ -6,6 +6,7 @@ function convert(options) {
   const jsonFileResult = jsonFile.readFileSync(options.inputJsonFile);
   const reportBuilder = builder.newBuilder();
   const suite = reportBuilder.testSuite().name("all");
+  let suiteDuration = 0;
   jsonFileResult.forEach(function(feature) {
     let durationInSec = 0;
 
@@ -35,7 +36,9 @@ function convert(options) {
     });
 
     testCase.time(durationInSec);
+    suiteDuration += durationInSec;
   });
+  suite.time(suiteDuration);
   reportBuilder.writeTo(options.outputXmlFile);
 }
 

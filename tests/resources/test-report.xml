@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="all" tests="8" failures="5" errors="0" skipped="0">
+  <testsuite name="all" time="50.708" tests="8" failures="5" errors="0" skipped="0">
     <testcase name="Arrays examples" file="features\arrays.feature" time="7.132000000000001">
       <failure message="TypeError: Cannot read property 'body' of undefined&#xA;    at Object.responseValueOneOf (c:\repos\bdd-rest-testing\node_modules\bdd-rest-core\rest-steps-api.js:686:51)&#xA;    at customWorld.&lt;anonymous> (c:\repos\bdd-rest-testing\node_modules\bdd-rest-core\rest-steps.js:230:12)"/>
       <system-err>
